@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/projetSB/CourseManagerController")
-public class CourseManagerController extends HttpServlet {
+public class CourseManagerController {
     private final CourseService courseService;
     private final SubjectService subjectService;
 
@@ -33,7 +33,7 @@ public class CourseManagerController extends HttpServlet {
     }
 
     @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Course> coursesList = courseService.getAllCourses();
         Map<Integer, Subjects> mapCourseIdSubject = new HashMap<>();
 
@@ -51,13 +51,6 @@ public class CourseManagerController extends HttpServlet {
         request.setAttribute("courses", coursesList);
         request.setAttribute("mapCourseIdSubject", mapCourseIdSubject);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/projetSB/courseManager");
-        dispatcher.forward(request, response);
+        return "courseManager";
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
-
 }

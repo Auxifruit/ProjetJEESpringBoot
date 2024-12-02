@@ -78,7 +78,7 @@
             }
         %>
         <button type="submit" formaction="/projetSB/CourseModificationController">Modifier</button>
-        <button type="submit" formaction="/projetSB/CourseDeletionController" onclick="confirmDelete(event)">Supprimer</button>
+        <button type="submit" formaction="/projetSB/CourseDeletionController" formmethod="post" onclick="confirmDelete(event)">Supprimer</button>
     </form>
     <%
         }

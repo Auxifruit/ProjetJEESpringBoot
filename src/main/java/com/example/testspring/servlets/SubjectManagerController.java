@@ -27,18 +27,12 @@ public class SubjectManagerController extends HttpServlet {
     }
 
     @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String showSubjectManagerPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Subjects> subjectsList = subjectService.getAllSubjects();
 
         request.setAttribute("subjects", subjectsList);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/projetSB/subjectManager");
-        dispatcher.forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        return "subjectManager";
     }
 
 }

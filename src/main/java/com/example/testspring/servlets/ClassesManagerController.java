@@ -21,7 +21,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/projetSB/ClassesManagerController")
-public class ClassesManagerController extends HttpServlet {
+public class ClassesManagerController {
 
     private final ClassesService classesService;
 
@@ -31,18 +31,11 @@ public class ClassesManagerController extends HttpServlet {
     }
 
     @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String showClassesManagerPage(HttpServletRequest request, HttpServletResponse response) {
         List<Classes> classesList = classesService.getAllClasses();
 
         request.setAttribute("classes", classesList);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("classesManager");
-        dispatcher.forward(request, response);
+        return "classesManager";
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
-
 }

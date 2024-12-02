@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/projetSB/UserManagerController")
-public class UserManagerController extends HttpServlet {
+public class UserManagerController {
 
     private final UsersService usersService;
     private final StudentService studentService;
@@ -39,7 +39,7 @@ public class UserManagerController extends HttpServlet {
     }
 
     @GetMapping
-    protected void doGet(@RequestParam("roleFilter") String roleFilter, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String showUserManagerPage(@RequestParam("roleFilter") String roleFilter, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Role role = null;
         if(roleFilter != null && !roleFilter.isEmpty()) {
             role = Role.valueOf(roleFilter);
@@ -80,13 +80,7 @@ public class UserManagerController extends HttpServlet {
         request.setAttribute("mapStudentIdMajor", mapStudentIdMajor);
         request.setAttribute("roleFilter", roleFilter);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/projetSB/userManager");
-        dispatcher.forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        return "userManager";
     }
 
 }

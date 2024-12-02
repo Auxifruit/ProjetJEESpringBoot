@@ -37,14 +37,8 @@ public class UserScheduleController extends HttpServlet {
         this.classesService = classesService;
     }
 
-    @PostMapping
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("SAVEG");
-        doGet(request, response);
-    }
-
     @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void showUserSchedulePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         Users user = (Users) session.getAttribute("connectedUser");
 

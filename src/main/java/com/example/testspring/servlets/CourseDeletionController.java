@@ -26,36 +26,28 @@ public class CourseDeletionController extends HttpServlet {
         this.courseService = courseService;
     }
 
-    @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
-
     @PostMapping
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String handleCourseDeletion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String courseIdString = request.getParameter("courseId");
 
         if(courseIdString == null || courseIdString.isEmpty()) {
             request.setAttribute("erreur", "Erreur : Veuillez choisir une matière.");
-            request.getRequestDispatcher("/projetSB/CourseManagerController").forward(request, response);
-            return;
+            return "redirect:/projetSB/CourseManagerController";
         }
 
         int courseId = Integer.parseInt(courseIdString);
 
         if(courseService.getCourseById(courseId) == null) {
             request.setAttribute("erreur", "Erreur : Le cours n'existe pas.");
-            request.getRequestDispatcher("/projetSB/CourseManagerController").forward(request, response);
-            return;
+            return "redirect:/projetSB/CourseManagerController";
         }
 
         if(courseService.deleteCourse(courseId) == true) {
-            request.getRequestDispatcher("/projetSB/CourseManagerController").forward(request, response);
+            return "redirect:/projetSB/CourseManagerController";
         }
         else {
             request.setAttribute("erreur", "Erreur : Erreur lors de la suppression du cours.");
-            request.getRequestDispatcher("/projetSB/CourseManagerController").forward(request, response);
+            return "redirect:/projetSB/CourseManagerController";
         }
-
     }
 }

@@ -98,7 +98,7 @@
             }
         %>
         <button type="submit" formaction="/projetSB/LessonModificationController">Modifier</button>
-        <button type="submit" formaction="/projetSB/LessonDeletionController" onclick="confirmDelete(event)">Supprimer</button>
+        <button type="submit" formaction="/projetSB/LessonDeletionController" formmethod="post" onclick="confirmDelete(event)">Supprimer</button>
         <button type="submit" formaction="/projetSB/LessonClassesManagerController">Assigner une ou plusieurs classes à la séance</button>
     </form>
     <%

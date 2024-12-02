@@ -40,7 +40,7 @@ public class TeacherGradeController {
     }
 
     @GetMapping
-    protected String doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected String showTeacherGradePage(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
         Users connectedUser = (Users) session.getAttribute("connectedUser");
 

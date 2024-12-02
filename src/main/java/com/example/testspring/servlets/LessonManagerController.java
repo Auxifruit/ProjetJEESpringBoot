@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/projetSB/LessonManagerController")
-public class LessonManagerController extends HttpServlet {
+public class LessonManagerController {
     private final LessonService lessonService;
     private final UsersService usersService;
     private final CourseService courseService;
@@ -36,7 +36,7 @@ public class LessonManagerController extends HttpServlet {
     }
 
     @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String showLessonManagerController(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Lesson> lessonList = lessonService.getAllLessons();
         Map<Integer, Users> mapLessonIdTeacher = new HashMap<>();
         Map<Integer, Course> mapLessonIdCourse = new HashMap<>();
@@ -64,13 +64,7 @@ public class LessonManagerController extends HttpServlet {
         request.setAttribute("mapLessonIdTeacher", mapLessonIdTeacher);
         request.setAttribute("mapLessonIdCourse", mapLessonIdCourse);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/projetSB/lessonManager");
-        dispatcher.forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        return "lessonManager";
     }
 
 }

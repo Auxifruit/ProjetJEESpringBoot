@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/projetSB/CourseCreationController")
-public class CourseCreationController extends HttpServlet {
+public class CourseCreationController {
 
     private final CourseService courseService;
     private final SubjectService subjectService;

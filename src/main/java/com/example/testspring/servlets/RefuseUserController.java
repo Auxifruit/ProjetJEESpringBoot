@@ -28,7 +28,7 @@ public class RefuseUserController {
     }
 
     @PostMapping
-    protected String doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String handleRefuseUser(HttpServletRequest request, HttpServletResponse response) {
         String userToValidateIdString = request.getParameter("userToValidateId");
 
         if(userToValidateIdString == null || userToValidateIdString.isEmpty()) {
@@ -39,25 +39,21 @@ public class RefuseUserController {
         int userToValidateId = Integer.parseInt(userToValidateIdString);
         Userstovalidate user = usersToValidateService.getUserToValidateById(userToValidateId);
 
-        // Si l'utilisateur est trouvé, envoyer l'email et refuser l'inscription
         if (user != null) {
-            // Préparer l'email
             String subject = "Votre inscription a été refusée";
             String body = "Bonjour " + user.getUserToValidateName() + ",\n\n" +
                     "Nous vous informons que votre inscription a été refusée. Si vous avez des questions, vous pouvez contacter notre équipe.\n\n" +
                     "Cordialement,\nL'équipe pédagogique";
             String email = user.getUserToValidateEmail();
 
-            // Envoi de l'email
             try {
-                GMailer gmailer = new GMailer();  // Créer une instance de GMailer
-                gmailer.sendMail(subject, body, email);  // Envoyer l'email
+                GMailer gmailer = new GMailer();
+                gmailer.sendMail(subject, body, email);
             } catch (Exception e) {
                 e.printStackTrace();
                 request.setAttribute("erreur", "Erreur : Impossible d'envoyer l'email de notification.");
             }
 
-            // Supprimer l'utilisateur de la table des utilisateurs à valider
             boolean deletionSuccess = usersToValidateService.deleteUserToValidate(userToValidateId);
 
             if (deletionSuccess) {

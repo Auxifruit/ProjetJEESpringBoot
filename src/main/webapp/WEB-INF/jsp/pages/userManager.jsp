@@ -135,7 +135,7 @@
                 }
         %>
         <button type="submit" formaction="/projetSB/UserModificationController">Modifier</button>
-        <button type="submit" formaction="/projetSB/UserDeletionController" onclick="confirmDelete(event)">Supprimer</button>
+        <button type="submit" formaction="/projetSB/UserDeletionController" formmethod="post" onclick="confirmDelete(event)">Supprimer</button>
         <%
             if(roleFilter != null && !roleFilter.equals(Role.administrator)) {
         %>

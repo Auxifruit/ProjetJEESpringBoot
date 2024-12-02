@@ -13,15 +13,14 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/projetSB/LogoutController")
-public class LogoutController extends HttpServlet {
+public class LogoutController {
     private static final long serialVersionUID = 1L;
 
     @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected String doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getSession().invalidate();
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("index");
-        dispatcher.forward(request, response);
+        return "index";
     }
 
 }

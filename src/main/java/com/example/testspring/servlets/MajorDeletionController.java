@@ -25,19 +25,13 @@ public class MajorDeletionController extends HttpServlet {
         this.majorService = majorService;
     }
 
-    @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
-
     @PostMapping
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String handleMajorDeletion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String majorIdString = request.getParameter("majorId");
 
         if(majorIdString == null || majorIdString.isEmpty()) {
             request.setAttribute("erreur", "Erreur : Veuillez choisir une filière.");
-            request.getRequestDispatcher("/projetSB/MajorManagerController").forward(request, response);
-            return;
+            return "redirect:/projetSB/MajorManagerController";
         }
 
         int majorId = Integer.parseInt(majorIdString);
@@ -45,17 +39,13 @@ public class MajorDeletionController extends HttpServlet {
 
         if(major == null) {
             request.setAttribute("erreur", "Erreur : La filière n'existe pas.");
-            request.getRequestDispatcher("/projetSB/MajorManagerController").forward(request, response);
-            return;
+            return "redirect:/projetSB/MajorManagerController";
         }
 
-        if(majorService.deleteMajorById(majorId) == true) {
-            request.getRequestDispatcher("/projetSB/MajorManagerController").forward(request, response);
-        }
-        else {
+        if(majorService.deleteMajorById(majorId) == false) {
             request.setAttribute("erreur", "Erreur : Erreur lors de la suppression de la filière.");
-            request.getRequestDispatcher("/projetSB/MajorManagerController").forward(request, response);
         }
 
+        return "redirect:/projetSB/MajorManagerController";
     }
 }

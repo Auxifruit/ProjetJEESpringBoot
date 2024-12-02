@@ -18,7 +18,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/projetSB/UserDeletionController")
-public class UserDeletionController extends HttpServlet {
+public class UserDeletionController {
 
     private final UsersService usersService;
 
@@ -27,21 +27,15 @@ public class UserDeletionController extends HttpServlet {
         this.usersService = usersService;
     }
 
-    @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
-
     @PostMapping
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String handleUserDeletion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         Users user = (Users) session.getAttribute("connectedUser");
         String userIdString = request.getParameter("userId");
 
         if(userIdString == null || userIdString.isEmpty()) {
             request.setAttribute("erreur", "Erreur : Veuillez choisir un utilisateur.");
-            request.getRequestDispatcher("/projetSB/UserManagerController?roleFilter=student").forward(request, response);
-            return;
+            return "redirect:/projetSB/UserManagerController?roleFilter=student";
         }
 
         int userId = Integer.parseInt(userIdString);
@@ -50,23 +44,18 @@ public class UserDeletionController extends HttpServlet {
 
         if(user.getUserId() == userId) {
             request.setAttribute("erreur", "Erreur : Vous ne pouvez pas vous supprimer vous-même.");
-            request.getRequestDispatcher("/projetSB/UserManagerController?roleFilter="+role).forward(request, response);
-            return;
+            return "redirect:/projetSB/UserManagerController?roleFilter="+role;
         }
 
         if(userToDelete == null) {
             request.setAttribute("erreur", "Erreur : L'utilisateur n'existe pas.");
-            request.getRequestDispatcher("/projetSB/UserManagerController?roleFilter="+role).forward(request, response);
-            return;
+            return "redirect:/projetSB/UserManagerController?roleFilter="+role;
         }
 
         if(usersService.deleteUser(userToDelete.getUserId()) == true) {
-            request.getRequestDispatcher("/projetSB/UserManagerController?roleFilter="+role).forward(request, response);
-        }
-        else {
             request.setAttribute("erreur", "Erreur : Erreur lors de la suppression de l'utilisateur.");
-            request.getRequestDispatcher("/projetSB/UserManagerController?roleFilter="+role).forward(request, response);
         }
 
+        return "redirect:/projetSB/UserManagerController?roleFilter="+role;
     }
 }

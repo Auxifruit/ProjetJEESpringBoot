@@ -33,7 +33,7 @@ public class UserCreationController {
     }
 
     @GetMapping
-    protected String showUserCreationPage(HttpServletRequest request, HttpServletResponse response){
+    protected String showUserCreationPage(HttpServletRequest request, HttpServletResponse response) {
         List<Users> usersList = usersService.getAllUsers();
 
         request.setAttribute("users", usersList);
@@ -41,7 +41,7 @@ public class UserCreationController {
     }
 
     @PostMapping
-    protected String handleUserCreation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String handleUserCreation(HttpServletRequest request, HttpServletResponse response) {
         String newUserLastName = request.getParameter("newUserLastName");
         String newUserName = request.getParameter("newUserName");
         String newUserEmail = request.getParameter("newUserEmail");

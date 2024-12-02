@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/projetSB/MajorManagerController")
-public class MajorManagerController extends HttpServlet {
+public class MajorManagerController {
     private final MajorService majorService;
 
     @Autowired
@@ -26,18 +26,11 @@ public class MajorManagerController extends HttpServlet {
     }
 
     @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String showMajorManagerPage(HttpServletRequest request, HttpServletResponse response)  {
         List<Major> majorList = majorService.getMajors();
 
         request.setAttribute("majors", majorList);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/projetSB/majorManager");
-        dispatcher.forward(request, response);
+        return "majorManager";
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
-
 }

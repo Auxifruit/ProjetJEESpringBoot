@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/projetSB/SubjectDeletionController")
-public class SubjectDeletionController extends HttpServlet {
+public class SubjectDeletionController {
 
     private final SubjectService subjectService;
 
@@ -25,36 +25,27 @@ public class SubjectDeletionController extends HttpServlet {
         this.subjectService = subjectService;
     }
 
-    @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
-
     @PostMapping
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String handleSubjectDeletion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String subjectIdString = request.getParameter("subjectId");
 
         if(subjectIdString == null || subjectIdString.isEmpty()) {
             request.setAttribute("erreur", "Erreur : Veuillez choisir une matière.");
-            request.getRequestDispatcher("/projetSB/SubjectManagerController").forward(request, response);
-            return;
+            return "redirect:/projetSB/SubjectManagerController";
         }
 
         int subjectId = Integer.parseInt(subjectIdString);
 
         if(subjectService.getSubjectById(subjectId) == null) {
             request.setAttribute("erreur", "Erreur : La matière n'existe pas.");
-            request.getRequestDispatcher("/projetSB/SubjectManagerController").forward(request, response);
-            return;
+            return "redirect:/projetSB/SubjectManagerController";
         }
 
-        if(subjectService.deleteSubjectFromTable(subjectId) == true) {
-            request.getRequestDispatcher("/projetSB/SubjectManagerController").forward(request, response);
-        }
-        else {
+
+        if(subjectService.deleteSubjectFromTable(subjectId) == false) {
             request.setAttribute("erreur", "Erreur : Erreur lors de la suppression de la matière.");
-            request.getRequestDispatcher("/projetSB/SubjectManagerController").forward(request, response);
         }
 
+        return "redirect:/projetSB/SubjectManagerController";
     }
 }

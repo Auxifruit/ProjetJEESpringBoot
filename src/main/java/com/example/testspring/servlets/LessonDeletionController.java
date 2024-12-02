@@ -20,7 +20,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/projetSB/LessonDeletionController")
-public class LessonDeletionController extends HttpServlet {
+public class LessonDeletionController {
 
     private final LessonService lessonService;
     private final LessonclassService lessonclassService;
@@ -33,20 +33,14 @@ public class LessonDeletionController extends HttpServlet {
         this.usersService = usersService;
     }
 
-    @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        doPost(request, response);
-    }
-
     @PostMapping
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String handleLessonDeletion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String lessonIdString = request.getParameter("lessonId");
 
         if(lessonIdString == null || lessonIdString.isEmpty()) {
             System.out.println("ERREUR 1");
             request.setAttribute("erreur", "Erreur : Veuillez choisir une séance.");
-            request.getRequestDispatcher("/projetSB/LessonManagerController").forward(request, response);
-            return;
+            return "redirect:/projetSB/LessonManagerController";
         }
 
         int lessonId = Integer.parseInt(lessonIdString);
@@ -54,8 +48,7 @@ public class LessonDeletionController extends HttpServlet {
         if(lessonService.getLessonById(lessonId) == null) {
             System.out.println("ERREUR 2");
             request.setAttribute("erreur", "Erreur : La séance n'existe pas.");
-            request.getRequestDispatcher("/projetSB/LessonManagerController").forward(request, response);
-            return;
+            return "redirect:/projetSB/LessonManagerController";
         }
 
         boolean isDeleted = lessonService.deleteLesson(lessonId);
@@ -63,7 +56,7 @@ public class LessonDeletionController extends HttpServlet {
             // Récupérer tous les étudiants associés à la séance supprimée
             List<Student> studentsInLesson = lessonclassService.getStudentsByLessonId(lessonId);
 
-            if(studentsInLesson != null && !studentsInLesson.isEmpty()) {
+            if (studentsInLesson != null && !studentsInLesson.isEmpty()) {
                 // Pour chaque étudiant, envoyer un email pour l'informer de la suppression de la séance
                 for (Student student : studentsInLesson) {
                     String studentEmail = usersService.getUserById(student.getStudentId()).getUserEmail();
@@ -86,16 +79,11 @@ public class LessonDeletionController extends HttpServlet {
                     }
                 }
             }
-
-            // Rediriger vers la page de gestion des séances
-            request.getRequestDispatcher("/projetSB/LessonManagerController").forward(request, response);
-        }
-        else {
+        } else {
             System.out.println("ERREUR 3");
             request.setAttribute("erreur", "Erreur : Erreur lors de la suppression de la séance.");
-            request.getRequestDispatcher("/projetSB/LessonManagerController").forward(request, response);
         }
+
+        return "redirect:/projetSB/LessonManagerController";
     }
-
-
 }
