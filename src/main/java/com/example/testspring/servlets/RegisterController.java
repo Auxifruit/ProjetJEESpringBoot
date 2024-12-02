@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/projetSB/RegisterController")
-public class RegisterController extends HttpServlet {
+public class RegisterController {
 
     private MajorService majorService;
     private UsersService usersService;
@@ -38,19 +38,15 @@ public class RegisterController extends HttpServlet {
     }
 
     @GetMapping
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String showRegisterPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Major> majorList = majorService.getMajors();
 
         request.setAttribute("majors", majorList);
 
-        try {
-            request.getRequestDispatcher("register").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return "register";
     }
     @PostMapping
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected String handleRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -63,14 +59,12 @@ public class RegisterController extends HttpServlet {
         if((firstName == null || firstName.isEmpty()) || (lastName == null || lastName.isEmpty()) || (email == null || email.isEmpty())
                 || (password == null || password.isEmpty()) || (birthdate == null || birthdate.isEmpty()) || (role.equals(Role.student) && (majorIdString == null || majorIdString.isEmpty()))) {
             request.setAttribute("error", "Erreur : Veuillez remplir tous les champs.");
-            doGet(request, response);
-            return;
+            return "redirect:/projetSB/RegisterController";
         }
 
         if(usersService.isEmailInTable(email) == true) {
             request.setAttribute("error", "Erreur : L'email est déjà utilisée.");
-            doGet(request, response);
-            return;
+            return "redirect:/projetSB/RegisterController";
         }
 
         Userstovalidate user = new Userstovalidate();
@@ -92,8 +86,7 @@ public class RegisterController extends HttpServlet {
         Boolean error = usersToValidateService.addUserToValidateInTable(user);
         if(error != true) {
             request.setAttribute("error", "Erreur : Erreur lors de l'inscription");
-            doGet(request, response);
-            return;
+            return "redirect:/projetSB/RegisterController";
         }
 
         try {
@@ -104,12 +97,10 @@ public class RegisterController extends HttpServlet {
             GMailer gmailer = new GMailer();
             gmailer.sendMail(subject, body, email);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/projetSB/succes");
-            dispatcher.forward(request, response);
+            return "succes";
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Erreur : Impossible d'envoyer l'email de confirmation.");
-            doGet(request, response);
+            return "redirect:/projetSB/RegisterController";
         }
     }
 }
