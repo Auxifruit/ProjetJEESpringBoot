@@ -52,6 +52,7 @@ Le projet utilise plusieurs technologies pour assurer son bon fonctionnement :
 - **API Gmail (OAuth2)** : Utilisé pour l'envoi de notifications par email, en utilisant un processus d'authentification sécurisé via OAuth2.
 
 ## UTILISATION
+Lancer la base de données avant de lancer l'application.
 Authentification des administrateurs  
 L'authentification des utilisateurs se fait via OAuth2 avec Google. Les administrateurs doivent se connecter à l'application en utilisant leur compte Google, ce qui permet de gérer de manière sécurisée l'envoi d'emails et l'accès aux fonctionnalités.
 
