@@ -2,6 +2,7 @@ package com.example.testspring.servlets;
 
 import com.example.testspring.entities.Users;
 import com.example.testspring.services.UsersService;
+import com.example.testspring.util.HashPswdUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class LoginController {
             return "login";
         }
 
-        Integer userId = usersService.userConnection(email, password);
+        Integer userId = usersService.userConnection(email, HashPswdUtil.hashPassword(password));
         if (userId == null) {
             model.addAttribute("error", "Erreur : L'email ou le mot de passe est incorrect.");
             return "login";

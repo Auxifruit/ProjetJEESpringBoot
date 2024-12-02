@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,8 +64,9 @@ public class EditInformationsController {
         String error = usersService.addUser(user);
         if (error != null) {
             Users updatedUser = usersService.getUserById(userId);
-            request.getSession().invalidate();
-            request.getSession().setAttribute("connectedUser", updatedUser);
+            HttpSession session = request.getSession(true);
+            session.invalidate();
+            session.setAttribute("connectedUser", updatedUser);
 
             request.setAttribute("message", "Les informations ont été mises à jour avec succès.");
         } else {
