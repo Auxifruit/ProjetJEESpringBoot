@@ -1,6 +1,7 @@
 package com.example.testspring.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -17,19 +18,24 @@ public class Users implements Serializable {
     @Column(name = "user_id")
     private int userId;
     @Basic
-    @Column(name = "user_password")
+    @Column(name = "user_password", nullable = false)
+    @NotNull
     private String userPassword;
     @Basic
-    @Column(name = "user_last_name")
+    @Column(name = "user_last_name", nullable = false)
+    @NotNull
     private String userLastName;
     @Basic
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false)
+    @NotNull
     private String userName;
     @Basic
-    @Column(name = "user_email")
+    @Column(name = "user_email", nullable = false)
+    @NotNull
     private String userEmail;
     @Basic
-    @Column(name = "user_birthdate")
+    @Column(name = "user_birthdate", nullable = false)
+    @NotNull
     private String userBirthdate;
     @Basic
     @Column(name = "user_role")

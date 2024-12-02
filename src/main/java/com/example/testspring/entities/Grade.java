@@ -1,6 +1,7 @@
 package com.example.testspring.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -14,13 +15,16 @@ public class Grade {
     @Column(name = "grade_id")
     private int gradeId;
     @Basic
-    @Column(name = "grade_name")
+    @Column(name = "grade_name", nullable = false)
+    @NotNull
     private String gradeName;
     @Basic
-    @Column(name = "grade_value")
+    @Column(name = "grade_value", nullable = false)
+    @NotNull
     private Double gradeValue;
     @Basic
-    @Column(name = "grade_coefficient")
+    @Column(name = "grade_coefficient", nullable = false)
+    @NotNull
     private Integer gradeCoefficient;
     @Basic
     @Column(name = "student_id")

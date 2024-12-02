@@ -1,6 +1,7 @@
 package com.example.testspring.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -14,7 +15,8 @@ public class Subjects {
     @Column(name = "subject_id")
     private int subjectId;
     @Basic
-    @Column(name = "subject_name")
+    @Column(name = "subject_name", nullable = false)
+    @NotNull
     private String subjectName;
 
     public int getSubjectId() {

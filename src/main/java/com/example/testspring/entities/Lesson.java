@@ -1,6 +1,8 @@
 package com.example.testspring.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.checkerframework.checker.units.qual.N;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -15,10 +17,12 @@ public class Lesson {
     @Column(name = "lesson_id")
     private int lessonId;
     @Basic
-    @Column(name = "lesson_start_date")
+    @Column(name = "lesson_start_date", nullable = false)
+    @NotNull
     private Timestamp lessonStartDate;
     @Basic
-    @Column(name = "lesson_end_date")
+    @Column(name = "lesson_end_date", nullable = false)
+    @NotNull
     private Timestamp lessonEndDate;
     @Basic
     @Column(name = "course_id")

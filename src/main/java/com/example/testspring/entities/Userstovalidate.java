@@ -1,6 +1,7 @@
 package com.example.testspring.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -14,19 +15,24 @@ public class Userstovalidate {
     @Column(name = "user_to_validate_id")
     private int userToValidateId;
     @Basic
-    @Column(name = "user_to_validate_password")
+    @Column(name = "user_to_validate_password", nullable = false)
+    @NotNull
     private String userToValidatePassword;
     @Basic
-    @Column(name = "user_to_validate_lastname")
+    @Column(name = "user_to_validate_lastname", nullable = false)
+    @NotNull
     private String userToValidateLastName;
     @Basic
-    @Column(name = "user_to_validate_name")
+    @Column(name = "user_to_validate_name", nullable = false)
+    @NotNull
     private String userToValidateName;
     @Basic
-    @Column(name = "user_to_validate_email")
+    @Column(name = "user_to_validate_email", nullable = false)
+    @NotNull
     private String userToValidateEmail;
     @Basic
-    @Column(name = "user_to_validate_birthdate")
+    @Column(name = "user_to_validate_birthdate", nullable = false)
+    @NotNull
     private String userToValidateBirthdate;
     @Basic
     @Column(name = "user_to_validate_role")
