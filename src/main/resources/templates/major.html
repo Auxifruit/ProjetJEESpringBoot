@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Majors</title>
+</head>
+<body>
+<h1>Liste des Filières</h1>
+
+<!-- Vérifier si la liste des filières est vide -->
+<div th:if="${majorList != null and !majorList.isEmpty()}">
+    <ul>
+        <!-- Boucle sur chaque major dans la liste -->
+        <li th:each="major : ${majorList}">
+            <span th:text="${major.majorName}">Nom de la filière</span>
+        </li>
+    </ul>
+</div>
+<div th:if="${majorList == null or majorList.isEmpty()}">
+    <p>Pas de filière</p>
+</div>
+
+<h2>Filière Solo</h2>
+<!-- Vérifier si un major solo existe -->
+<div th:if="${major != null}">
+    <p>Filière solo : <span th:text="${major.majorName}">Nom du Major</span></p>
+</div>
+<div th:if="${major == null}">
+    <p>Ca marche pas</p>
+</div>
+</body>
+</html>

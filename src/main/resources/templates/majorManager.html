@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Gestion des filières</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<script th:src="@{/js/filterTable.js}"></script>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+
+<div>
+  <h1>Liste des filières</h1>
+
+  <th:block th:if="${#session.getAttribute('user') == null or not #session.getAttribute('user').role.equals('administrator')}">
+    <p>Vous n'êtes pas autorisé à voir cette page.</p>
+    <a href="index">Retour à l'accueil</a>
+  </th:block>
+
+  <th:block th:unless="${#session.getAttribute('user') == null or not #session.getAttribute('user').role.equals('administrator')}">
+    <th:block th:if="${#lists.isEmpty(majors)}">
+      <p>Il n'y a pas encore de filière</p>
+    </th:block>
+
+    <th:block th:unless="${#lists.isEmpty(majors)}">
+      <label for="searchInput">Rechercher :</label>
+      <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Recherche">
+      </br></br>
+      <form method="get">
+        <table border="1">
+          <thead>
+          <tr>
+            <th>Nom de la filière</th>
+            <th>Selection</th>
+          </tr>
+          </thead>
+          <tbody>
+          <th:block th:each="major : ${majors}">
+            <tr>
+              <td th:text="${major.majorName}"></td>
+              <td><input type="radio" name="marjorId" th:value="${major.marjorId}" required></td>
+            </tr>
+          </th:block>
+          </tbody>
+        </table>
+
+        <th:block th:if="${error != null}">
+          <p style="color: red;" th:text="${error}"></p></br>
+        </th:block>
+
+        <button type="submit" formaction="majorModification">Modifier</button>
+        <button type="submit" formaction="majorDeletion" onclick="confirmDelete(event)">Supprimer</button>
+      </form>
+    </th:block>
+  </th:block>
+
+  <form action="majorCreation" method="get">
+    <button type="submit">Créer une nouvelle filière</button>
+  </form>
+</div>
+
+<script>
+  function confirmDelete(event) {
+    const confirmation = confirm("Êtes-vous sûr de vouloir supprimer la filière ?");
+    if (!confirmation) {
+      event.preventDefault();
+    }
+  }
+</script>
+</body>
+</html>

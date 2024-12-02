@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des matières</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+</head>
+<script src="${pageContext.request.contextPath}/js/filterTable.js"></script>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+<div>
+  <h1>Liste des matières</h1>
+
+  <div th:if="${user == null or not user.hasRole('administrator')}">
+    <h2>Accès refusé. Vous devez être un administrateur pour accéder à cette page.</h2>
+    <a th:href="@{/index}">Retour à l'accueil</a>
+  </div>
+
+  <div th:if="${user != null and user.hasRole('administrator')}">
+    <div th:if="${#lists.isEmpty(subjectList)}">
+      <h2>Il n'y a pas encore de matière</h2>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(subjectList)}">
+      <label for="searchInput">Rechercher :</label>
+      <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Recherche"><br><br>
+
+      <form method="get">
+        <table border="1">
+          <thead>
+          <tr>
+            <th>Nom de la matière</th>
+            <th>Selection</th>
+          </tr>
+          </thead>
+          <tbody>
+          <th:block th:each="subject : ${subjectList}">
+            <tr>
+              <td th:text="${subject.subjectName}"></td>
+              <td><input type="radio" name="subjectId" th:value="${subject.subjectId}" required></td>
+            </tr>
+          </th:block>
+          </tbody>
+        </table>
+
+        <div th:if="${error != null}">
+          <p style="color: red;" th:text="${error}"></p><br>
+        </div>
+
+        <button type="submit" formaction="subjectModification-servlet">Modifier</button>
+        <button type="submit" formaction="subjectDeletion-servlet" onclick="confirmDelete(event)">Supprimer</button>
+      </form>
+    </div>
+
+    <form action="subjectCreation-servlet" method="get">
+      <button type="submit">Créer</button>
+    </form>
+  </div>
+</div>
+</body>
+
+<script>
+  function confirmDelete(event) {
+    const confirmation = confirm("Êtes-vous sûr de vouloir supprimer la matière ?");
+
+    if (!confirmation) {
+      event.preventDefault();
+    }
+  }
+</script>
+</html>

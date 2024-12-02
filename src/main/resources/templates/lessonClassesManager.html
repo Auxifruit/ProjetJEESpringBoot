@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Assignation des séances</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+
+<div>
+  <h1>Assignation des classes à des séances</h1>
+
+  <div th:if="${user == null or user.role != 'administrator'}">
+    <script th:inline="javascript">
+      window.location.href = '/index';
+    </script>
+  </div>
+
+  <div th:unless="${user == null or user.role != 'administrator'}">
+    <div th:if="${lesson == null}">
+      <h2>La séance n'existe pas</h2>
+    </div>
+
+    <div th:unless="${lesson == null}">
+      <div id="OldInfos">
+        <h3>Informations de la séance :</h3>
+        <p>Cours :
+          <span th:text="${lesson.courseId != null && lesson.courseId > 0 ? courseDAO.getCourseName(lesson.courseId) : 'Il n\'y a pas de cours associé à la séance'}"></span>
+        </p>
+        <p>Enseignant :
+          <span th:text="${lesson.teacherId != null && lesson.teacherId > 0 ? userDAO.getUserById(lesson.teacherId).userLastName + ' ' + userDAO.getUserById(lesson.teacherId).userName : 'Il n\'y a pas d\'enseignant associé à la séance'}"></span>
+        </p>
+        <p>Date de début : <span th:text="${lesson.lesson_Start_Date}"></span></p>
+        <p>Date de fin : <span th:text="${lesson.lesson_End_Date}"></span></p>
+      </div>
+
+      <!-- Formulaire d'assignation -->
+      <form th:action="@{/lessonClassesAssignation-servlet}" method="post">
+        <h3>Classe(s) disponible(s) :</h3>
+        <div th:if="${availableClasses == null or #lists.isEmpty(availableClasses)}">
+          <p>Aucune classe n'est disponible pour la séance</p>
+        </div>
+        <div th:unless="${availableClasses == null or #lists.isEmpty(availableClasses)}">
+          <table border="1">
+            <tr>
+              <th>Nom de la classe</th>
+              <th>Selection</th>
+            </tr>
+            <tr th:each="classe : ${availableClasses}">
+              <td th:text="${classe.className}"></td>
+              <td><input type="radio" name="classId" th:value="${classe.classId}"></td>
+            </tr>
+          </table>
+          <input type="hidden" name="lessonId" th:value="${lesson.lessonId}">
+          <button type="submit" onclick="confirmAction(event, 'assign')">Assigner</button>
+        </div>
+      </form>
+
+      <!-- Formulaire de désassignation -->
+      <form th:action="@{/lessonClassesUnassignation-servlet}" method="post">
+        <h3>Classe(s) participante(s) :</h3>
+        <div th:if="${participatingClasses == null or #lists.isEmpty(participatingClasses)}">
+          <p>Aucune classe ne participe à la séance</p>
+        </div>
+        <div th:unless="${participatingClasses == null or #lists.isEmpty(participatingClasses)}">
+          <table border="1">
+            <tr>
+              <th>Nom de la classe</th>
+              <th>Selection</th>
+            </tr>
+            <tr th:each="classe : ${participatingClasses}">
+              <td th:text="${classe.className}"></td>
+              <td><input type="radio" name="classId" th:value="${classe.classId}"></td>
+            </tr>
+          </table>
+          <input type="hidden" name="lessonId" th:value="${lesson.lessonId}">
+
+          <div th:if="${messageErreur != null and !#strings.isEmpty(messageErreur)}">
+            <p style="color: red" th:text="${messageErreur}"></p>
+          </div>
+
+          <button type="submit" onclick="confirmAction(event, 'unassign')">Désassigner</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmAction(event, action) {
+    let confirmationMessage = '';
+
+    if (action === 'assign') {
+      confirmationMessage = "Êtes-vous sûr de vouloir assigner cette classe à cette séance ?";
+    } else if (action === 'unassign') {
+      confirmationMessage = "Êtes-vous sûr de vouloir désassigner cette classe de cette séance ?";
+    } else {
+      confirmationMessage = "Êtes-vous sûr de vouloir effectuer cette action ?";
+    }
+
+    const confirmation = confirm(confirmationMessage);
+
+    if (!confirmation) {
+      event.preventDefault(); // Annule l'envoi du formulaire si l'utilisateur annule
+    }
+  }
+</script>
+</body>
+</html>

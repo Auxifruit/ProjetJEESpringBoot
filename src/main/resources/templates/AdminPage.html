@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Page admin</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+<div th:if="${user == null or user.role != 'administrator'}">
+  <script th:inline="javascript">
+    window.location.href = '/index';
+  </script>
+</div>
+
+<div th:unless="${user == null or user.role != 'administrator'}">
+  <div th:include="~{elements/sidebar}"></div>
+  <div>
+    <h1>Page admin</h1>
+    <div id="OldInfos">
+      <ul>
+        <li><a th:href="@{/userToValidateManager-servlet}">Gérer les inscriptions</a></li>
+        <li><a th:href="@{/userManager-servlet(roleFilter='student')}">Gérer les utilisateurs</a></li>
+        <li><a th:href="@{/lessonManager-servlet}">Gérer les séances</a></li>
+        <li><a th:href="@{/subjectManager-servlet}">Gérer les matières</a></li>
+        <li><a th:href="@{/courseManager-servlet}">Gérer les cours</a></li>
+        <li><a th:href="@{/majorManager-servlet}">Gérer les filières</a></li>
+        <li><a th:href="@{/gradeManager-servlet}">Gérer les notes</a></li>
+        <li><a th:href="@{/classesManager-servlet}">Gérer les classes</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Gestion des séances</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<script th:src="@{/js/filterTable.js}"></script>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+
+<div>
+  <h1>Liste des séances</h1>
+
+  <div th:if="${user == null or user.role != 'administrator'}">
+    <script th:inline="javascript">
+      window.location.href = '/index';
+    </script>
+  </div>
+
+  <div th:unless="${user == null or user.role != 'administrator'}">
+    <div th:if="${lessons == null or #lists.isEmpty(lessons)}">
+      <h2>Il n'y a pas encore de séance</h2>
+    </div>
+
+    <div th:unless="${lessons == null or #lists.isEmpty(lessons)}">
+      <label for="searchInput">Rechercher :</label>
+      <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Recherche"></br></br>
+      <form method="get">
+        <table border="1">
+          <tr>
+            <th>Nom du cours</th>
+            <th>Nom et prénom du professeur</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Selection</th>
+          </tr>
+          <tr th:each="lesson : ${lessons}">
+            <td th:text="${lesson.courseId != null ? courseDAO.getCourseName(lesson.courseId) : 'Pas de cours associé'}"></td>
+            <td th:text="${lesson.teacherId != null ? userDAO.getUserById(lesson.teacherId).userLastName + ' ' + userDAO.getUserById(lesson.teacherId).userName : 'Pas d\'enseignant associé'}"></td>
+            <td th:text="${lesson.lesson_Start_Date}"></td>
+            <td th:text="${lesson.lesson_End_Date}"></td>
+            <td><input type="radio" name="lessonId" th:value="${lesson.lessonId}" required></td>
+          </tr>
+        </table>
+
+        <div th:if="${messageErreur != null and !#strings.isEmpty(messageErreur)}">
+          <p style="color: red" th:text="${messageErreur}"></p>
+        </div>
+
+        <button type="submit" formaction="@{/lessonModification-servlet}">Modifier</button>
+        <button type="submit" formaction="@{/lessonDeletion-servlet}" onclick="confirmDelete(event)">Supprimer</button>
+        <button type="submit" formaction="@{/lessonClassesManager-servlet}">Assigner une ou plusieurs classes à la séance</button>
+      </form>
+    </div>
+  </div>
+
+  <form action="lessonCreation-servlet" method="get">
+    <button type="submit">Créer</button>
+  </form>
+</div>
+
+</body>
+<script>
+  function confirmDelete(event) {
+    const confirmation = confirm("Êtes-vous sûr de vouloir supprimer la séance ?");
+    if (!confirmation) {
+      event.preventDefault(); // Annule la soumission du formulaire si l'utilisateur annule
+    }
+  }
+</script>
+</html>

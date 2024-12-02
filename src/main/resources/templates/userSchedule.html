@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Emploi du temps</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+</head>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+
+<div>
+  <h1>Emploi du temps :</h1>
+
+  <!-- Check if user is logged in -->
+  <div th:if="${user == null}">
+    <p>Vous devez être connecté pour voir l'emploi du temps.</p>
+  </div>
+
+  <div th:if="${user != null}">
+    <div th:if="${lessonList == null or lessonList.isEmpty()}">
+      <h2>L'emploi du temps est vide</h2>
+    </div>
+
+    <div th:if="${lessonList != null}">
+      <div th:each="entry : ${lessonList}">
+        <div th:if="${entry.key.isBefore(T(java.time.LocalDate).now())}">
+          <h2>Cours passés :</h2>
+          <div style="display: none" id="pastCoursesTable">
+            <div th:if="${entry.value.isEmpty()}">
+              <h2>Pas de cours passés</h2>
+            </div>
+            <div th:each="lesson : ${entry.value}">
+              <h3 th:text="${entry.key.format(T(java.time.format.DateTimeFormatter).ofPattern('EEEE dd MMMM yyyy'))}"></h3>
+              <table border="1">
+                <tr>
+                  <th>Nom du cours</th>
+                  <th th:if="${not isTeacher}">Nom prénom de l'enseignant</th>
+                  <th>Heure de début</th>
+                  <th>Heure de fin</th>
+                  <th>Classe participante</th>
+                </tr>
+                <tr th:each="lesson : ${entry.value}">
+                  <td th:text="${lesson.courseId != null ? T(com.example.projetjee.model.dao.CourseDAO).getCourseName(lesson.courseId) : 'Pas de cours pour cette séance'}"></td>
+                  <td th:if="${not isTeacher}" th:text="${lesson.teacherId != null ? T(com.example.projetjee.model.dao.UserDAO).getUserById(lesson.teacherId).userLastName + ' ' + T(com.example.projetjee.model.dao.UserDAO).getUserById(lesson.teacherId).userName : 'Pas d\'enseignant pour cette séance'}"></td>
+                  <td th:text="${lesson.lesson_Start_Date.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm'))}"></td>
+                  <td th:text="${lesson.lesson_End_Date.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm'))}"></td>
+                  <td>
+                    <span th:each="classe : ${T(com.example.projetjee.model.dao.LessonClassesDAO).getLessonClasses(lesson.lessonId)}" th:text="${classe.className}"></span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <button onclick="toggleDisplay()">Afficher ou non les cours passés</button>
+        </div>
+      </div>
+
+      <div th:each="entry : ${lessonList}">
+        <div th:if="${entry.key.isAfter(T(java.time.LocalDate).now())}">
+          <h2>Cours à venir :</h2>
+          <div th:each="lesson : ${entry.value}">
+            <h3 th:text="${entry.key.format(T(java.time.format.DateTimeFormatter).ofPattern('EEEE dd MMMM yyyy'))}"></h3>
+            <table border="1">
+              <tr>
+                <th>Nom du cours</th>
+                <th th:if="${not isTeacher}">Nom prénom de l'enseignant</th>
+                <th>Heure de début</th>
+                <th>Heure de fin</th>
+                <th>Classe participante</th>
+              </tr>
+              <tr th:each="lesson : ${entry.value}">
+                <td th:text="${lesson.courseId != null ? T(com.example.projetjee.model.dao.CourseDAO).getCourseName(lesson.courseId) : 'Pas de cours pour cette séance'}"></td>
+                <td th:if="${not isTeacher}" th:text="${lesson.teacherId != null ? T(com.example.projetjee.model.dao.UserDAO).getUserById(lesson.teacherId).userLastName + ' ' + T(com.example.projetjee.model.dao.UserDAO).getUserById(lesson.teacherId).userName : 'Pas d\'enseignant pour cette séance'}"></td>
+                <td th:text="${lesson.lesson_Start_Date.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm'))}"></td>
+                <td th:text="${lesson.lesson_End_Date.format(T(java.time.format.DateTimeFormatter).ofPattern('HH:mm'))}"></td>
+                <td>
+                  <span th:each="classe : ${T(com.example.projetjee.model.dao.LessonClassesDAO).getLessonClasses(lesson.lessonId)}" th:text="${classe.className}"></span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+<script>
+  function toggleDisplay() {
+    const table = document.getElementById('pastCoursesTable');
+    table.style.display = table.style.display === 'none' ? 'table' : 'none';
+  }
+</script>
+
+</html>

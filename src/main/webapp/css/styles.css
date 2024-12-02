@@ -1,0 +1,169 @@
+/* Importation de la police Roboto Condensed */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+
+/* Application de la police à tout le site */
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    margin: 3%;
+    padding: 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+form {
+    background: rgba(255, 255, 255, 1); /* Fond blanc avec une opacité de 0.8 */
+    padding: 30px;
+    border-radius: 15px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre douce pour un effet plus élégant */
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espacement entre les éléments */
+}
+
+label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+}
+
+
+button{
+    padding: 12px 20px;
+    background-color: #77A4C6; /* Bleu pour les boutons */
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background-color: #669dc7; /* Changer la couleur du bouton au survol */
+}
+#btnCancel {
+    padding: 12px 20px;
+    background-color: red; /* Red pour ce bouton */
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+
+}
+#btnCancel:hover {
+    background-color: darkred; /* Changer la couleur du bouton au survol */
+}
+#btnSave {
+    padding: 12px 20px;
+    background-color: green; /* Red pour ce bouton */
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+
+}
+#btnSave:hover {
+    background-color: darkgreen; /* Changer la couleur du bouton au survol */
+}
+
+
+/* Pour le titre ou des éléments supplémentaires */
+h2, h1 {
+    color: #333;
+    text-align: center;
+}
+
+/* Style par défaut pour le select */
+select {
+    width: 100%;
+    padding: 10px;
+    font-family: 'Roboto Condensed', sans-serif; /* Applique une police spécifique */
+    font-size: 16px;
+    color: #333; /* Texte noir */
+    background-color: white; /* Fond blanc */
+    border: 2px solid #77A4C6; /* Bordure noire bien visible */
+    border-radius: 15px; /* Coins arrondis */
+    outline: none; /* Supprime le contour au clic */
+    appearance: auto; /* Permet d'afficher la flèche classique */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Transition douce */
+}
+
+/* Style au focus (quand l'utilisateur clique ou navigue avec la touche Tab) */
+select:focus {
+    border-color: #77A4C6; /* Bordure noire au focus */
+    box-shadow: 0 0 5px rgba(119, 164, 198, 0.5); /* Ombre bleue claire autour du select */
+}
+
+/* Menu déroulant (options) */
+select option {
+    font-family: 'Roboto Condensed', sans-serif; /* Applique la police au menu déroulant */
+    color: #333; /* Texte noir */
+    background-color: white; /* Fond blanc pour les options */
+}
+
+/* Option sélectionnée */
+select option:checked {
+    background-color: #77A4C6; /* Fond bleu clair pour l'option sélectionnée */
+    color: white; /* Texte blanc pour l'option sélectionnée */
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid #77A4C6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid #77A4C6;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #abdbff;
+    font-weight: bold;
+}
+
+tr:nth-child(even) td {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) td {
+    background-color: #ffffff;
+}
+
+div#OldInfos {
+    background: rgba(255, 255, 255, 1);
+    padding: 30px;
+    border-radius: 15px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: #77A4C6;
+}
+
+#OldInfos ul li {
+    padding: 10px;
+}

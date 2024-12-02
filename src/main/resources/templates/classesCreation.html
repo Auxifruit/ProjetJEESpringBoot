@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Création de filière</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<script th:src="@{/js/showTable.js}"></script>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+<div>
+  <h1>Création d'une nouvelle classe</h1>
+  <div id="OldInfos">
+    <h3>Classe existante :</h3>
+
+    <div th:if="${user == null or user.role != 'administrator'}">
+      <script th:inline="javascript">
+        window.location.href = '/index';
+      </script>
+    </div>
+
+    <div th:unless="${user == null or user.role != 'administrator'}">
+      <div th:if="${classesList == null or #lists.isEmpty(classesList)}">
+        <p>Il n'y a pas encore de classe</p>
+      </div>
+
+      <div th:unless="${classesList == null or #lists.isEmpty(classesList)}">
+        <button onclick="toggleTable()">Afficher/Masquer le tableau</button></br></br>
+        <table border="1" id="existingTable" style="display: table">
+          <th>Nom de la classe</th>
+          <tr th:each="classe : ${classesList}">
+            <td th:text="${classe.className}"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <form th:action="@{/classesCreation-servlet}" method="post">
+    <h3>Nouvelle classe :</h3>
+    <label>Choix du nom de la classe : </label>
+    <input type="text" name="newClasses" required/>
+
+    <div th:if="${messageErreur != null and !#strings.isEmpty(messageErreur)}">
+      <p style="color: red" th:text="${messageErreur}"></p></br>
+    </div>
+
+    <button type="submit" onclick="confirmCreate(event)">Créer</button>
+  </form>
+</div>
+
+<script>
+  function confirmCreate(event) {
+    const confirmation = confirm("Êtes-vous sûr de vouloir créer la classe ?");
+    if (!confirmation) {
+      event.preventDefault();
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Liste des étudiants</title>
+  <link rel="stylesheet" th:href="@{/CSS/ListStudents.css}">
+</head>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+
+<!-- Formulaire de recherche -->
+<form>
+  <div style="margin-bottom: 20px;">
+    <label for="filterCriteria">Rechercher par :</label>
+    <select id="filterCriteria" th:value="${filterCriteria}">
+      <option value="all">Tous</option>
+      <option value="prenom">Prénom</option>
+      <option value="nom">Nom</option>
+      <option value="email">Email</option>
+    </select>
+
+    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Entrez votre recherche" style="width: 300px; padding: 5px;">
+  </div>
+</form>
+
+<!-- Formulaire de filtrage par classe -->
+<form>
+  <div style="margin-bottom: 20px;">
+    <label for="classSelector">Filtrer par classe :</label>
+    <select id="classSelector" onchange="filterTable()">
+      <option value="all">Toutes les classes</option>
+      <th:block th:each="classe : ${availableClasses}">
+        <option th:value="${classe}" th:text="${classe}"></option>
+      </th:block>
+    </select>
+  </div>
+</form>
+
+<!-- Tableau des étudiants -->
+<table id="myTable">
+  <thead>
+  <tr>
+    <th>Prénom</th>
+    <th>Nom</th>
+    <th>Email</th>
+    <th>Date de Naissance</th>
+    <th>Classe</th>
+  </tr>
+  </thead>
+  <tbody>
+  <th:block th:if="${#lists.isEmpty(etudiants)}">
+    <tr>
+      <td colspan="5">Aucun étudiant trouvé</td>
+    </tr>
+  </th:block>
+
+  <th:block th:unless="${#lists.isEmpty(etudiants)}">
+    <th:block th:each="etudiant : ${etudiants}">
+      <tr>
+        <td th:text="${etudiant.userName}"></td>
+        <td th:text="${etudiant.userLastName}"></td>
+        <td th:text="${etudiant.userEmail}"></td>
+        <td th:text="${etudiant.user_Birthdate}"></td>
+        <td th:text="${etudiant.className}"></td>
+      </tr>
+    </th:block>
+  </th:block>
+  </tbody>
+</table>
+
+<script>
+  function filterTable() {
+    // Récupérer la valeur de la recherche, le critère sélectionné et la classe
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const filterCriteria = document.getElementById('filterCriteria').value;
+    const selectedClass = document.getElementById('classSelector').value;
+    const table = document.getElementById('myTable');
+    const rows = table.getElementsByTagName('tr');
+
+    // Parcourir toutes les lignes du tableau et les filtrer
+    for (let i = 1; i < rows.length; i++) { // Commencer à 1 pour ignorer l'en-tête du tableau
+      const cells = rows[i].getElementsByTagName('td');
+      let match = false;
+
+      // Filtrage basé sur le critère de recherche
+      if (filterCriteria === 'prenom' && cells[0].textContent.toLowerCase().includes(input)) {
+        match = true;
+      } else if (filterCriteria === 'nom' && cells[1].textContent.toLowerCase().includes(input)) {
+        match = true;
+      } else if (filterCriteria === 'email' && cells[2].textContent.toLowerCase().includes(input)) {
+        match = true;
+      } else if (filterCriteria === 'all') {
+        match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(input));
+      }
+
+      // Filtrage basé sur la classe
+      const classMatch = selectedClass === 'all' || cells[4].textContent === selectedClass;
+
+      // Afficher ou masquer la ligne
+      rows[i].style.display = match && classMatch ? '' : 'none';
+    }
+  }
+</script>
+
+</body>
+</html>

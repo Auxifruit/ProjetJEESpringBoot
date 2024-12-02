@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Modification de note</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:include="~{elements/sidebar}"></div>
+
+<div>
+  <h1>Modification d'une note</h1>
+
+  <div th:if="${user == null or user.role != 'administrator'}">
+    <script th:inline="javascript">
+      window.location.href = '/index';
+    </script>
+  </div>
+
+  <div th:unless="${user == null or user.role != 'administrator'}">
+    <div th:if="${grade == null}">
+      <p>La note n'existe pas</p>
+    </div>
+
+    <div th:unless="${grade == null}">
+      <div id="OldInfos">
+        <h3>Anciennes informations :</h3>
+        <p>Nom de la note : <span th:text="${grade.gradeName}"></span></p>
+        <p>Nom du cours :
+          <span th:text="${grade.courseId != null ? courseDAO.getCourseById(grade.courseId).courseName : 'Pas de cours associé'}"></span>
+        </p>
+        <p>Valeur de la note : <span th:text="${grade.gradeValue}"></span></p>
+        <p>Coefficient de la note : <span th:text="${grade.gradeCoefficient}"></span></p>
+        <p>Nom et prénom de l'étudiant :
+          <span th:text="${userDAO.getUserById(grade.studentId).userLastName + ' ' + userDAO.getUserById(grade.studentId).userName}"></span>
+        </p>
+        <p>Nom et prénom de l'enseignant :
+          <span th:text="${grade.teacherId != null ? userDAO.getUserById(grade.teacherId).userLastName + ' ' + userDAO.getUserById(grade.teacherId).userName : 'Pas d\'enseignant associé'}"></span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <form th:action="@{/gradeModification-servlet}" method="post">
+    <h3>Nouvelles informations :</h3>
+
+    <label>Nom de la note : </label>
+    <input type="text" name="gradeNewName" th:value="${grade.gradeName}" required/>
+
+    <label>Choix du cours : </label>
+    <select name="gradeNewCourseId">
+      <option value="">Ne pas changer le cours</option>
+      <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}"></option>
+    </select>
+
+    <label>Valeur de la note : </label>
+    <input type="number" name="gradeNewValue" th:value="${grade.gradeValue}" required/>
+
+    <label>Coefficient de la note : </label>
+    <input type="number" name="gradeNewCoefficient" th:value="${grade.gradeCoefficient}" required/>
+
+    <label>Choix de l'étudiant : </label>
+    <select name="gradeNewStudentId">
+      <option value="">Ne pas changer l'étudiant</option>
+      <option th:each="student : ${students}" th:value="${student.studentId}"
+              th:text="${userDAO.getUserById(student.studentId).userLastName + ' ' + userDAO.getUserById(student.studentId).userName + ' ' + classeDAO.getClasseById(student.classId).className}"></option>
+    </select>
+
+    <label>Choix de l'enseignant : </label>
+    <select name="gradeNewTeacherId">
+      <option value="">Ne pas changer l'enseignant</option>
+      <option th:each="teacher : ${teachers}" th:value="${teacher.teacherId}"
+              th:text="${userDAO.getUserById(teacher.teacherId).userLastName + ' ' + userDAO.getUserById(teacher.teacherId).userName}"></option>
+    </select>
+
+    <input type="hidden" name="gradeId" th:value="${grade.gradeId}"/>
+
+    <div th:if="${messageErreur != null and !#strings.isEmpty(messageErreur)}">
+      <p style="color: red" th:text="${messageErreur}"></p>
+    </div>
+
+    <button type="submit" onclick="confirmModify(event)">Modifier</button>
+  </form>
+</div>
+
+<script>
+  function confirmModify(event) {
+    const confirmation = confirm("Êtes-vous sûr de vouloir modifier la note ?");
+    if (!confirmation) {
+      event.preventDefault();
+    }
+  }
+</script>
+</body>
+</html>
