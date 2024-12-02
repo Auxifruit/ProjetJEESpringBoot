@@ -21,7 +21,7 @@ public class UsersToValidateService {
     }
 
     public Userstovalidate getUserToValidateById(int userId) {
-        return usersToValidateRepository.getReferenceById(userId);
+        return usersToValidateRepository.findById(userId).orElse(null);
     }
 
     public boolean addUserToValidateInTable(Userstovalidate userstovalidate) {

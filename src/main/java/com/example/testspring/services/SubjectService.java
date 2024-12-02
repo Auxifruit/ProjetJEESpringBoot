@@ -23,7 +23,7 @@ public class SubjectService {
     }
 
     public Subjects getSubjectById(int subjectId) {
-        return subjectRepository.getReferenceById(subjectId);
+        return subjectRepository.findById(subjectId).orElse(null);
     }
 
     public String addSubjectInTable(Subjects subject) {

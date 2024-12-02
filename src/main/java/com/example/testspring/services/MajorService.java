@@ -20,7 +20,7 @@ public class MajorService {
     }
 
     public Major getMajorById(Integer majorId) {
-        return this.majorRepository.getReferenceById(majorId);
+        return this.majorRepository.findById(majorId).orElse(null);
     }
 
     public String addMajor(Major major) {

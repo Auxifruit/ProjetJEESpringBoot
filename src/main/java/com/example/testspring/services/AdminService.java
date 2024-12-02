@@ -22,7 +22,7 @@ public class AdminService {
     }
 
     public Administrator getAdministratorById(int administratorId) {
-        return adminRepository.getReferenceById(administratorId);
+        return adminRepository.findById(administratorId).orElse(null);
     }
 
     public boolean addAdminInTable(Administrator administrator) {

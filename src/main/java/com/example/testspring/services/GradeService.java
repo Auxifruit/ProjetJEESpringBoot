@@ -23,7 +23,7 @@ public class GradeService {
 
     // Récupérer une note par son ID
     public Grade getGradeById(int gradeId) {
-        return gradeRepository.getReferenceById(gradeId);
+        return gradeRepository.findById(gradeId).orElse(null);
     }
 
     public String addGrade(Grade grade) {

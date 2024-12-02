@@ -22,7 +22,7 @@ public class StudentService {
     }
 
     public Student getStudentById(int studentId) {
-        return studentRepository.getReferenceById(studentId);
+        return studentRepository.findById(studentId).orElse(null);
     }
 
     public boolean addOrUpdateStudent(Student student) {

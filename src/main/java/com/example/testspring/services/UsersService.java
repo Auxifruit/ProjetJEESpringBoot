@@ -35,7 +35,7 @@ public class UsersService {
     }
 
     public Users getUserById(int userId) {
-        return usersRepository.getReferenceById(userId);
+        return usersRepository.findById(userId).orElse(null);
     }
 
     public String addUser(Users user) {

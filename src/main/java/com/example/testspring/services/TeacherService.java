@@ -40,8 +40,8 @@ public class TeacherService {
         return false;
     }
 
-    public Optional<Teacher> getTeacherById(int teacherId) {
-        return teacherRepository.findById(teacherId);
+    public Teacher getTeacherById(int teacherId) {
+        return teacherRepository.findById(teacherId).orElse(null);
     }
 }
 

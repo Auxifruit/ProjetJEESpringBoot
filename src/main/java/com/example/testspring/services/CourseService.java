@@ -23,7 +23,7 @@ public class CourseService {
     }
 
     public Course getCourseById(int courseId) {
-        return courseRepository.getReferenceById(courseId);
+        return courseRepository.findById(courseId).orElse(null);
     }
 
     public String addCourse(Course course) {
