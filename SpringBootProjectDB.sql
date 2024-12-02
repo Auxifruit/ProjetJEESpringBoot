@@ -138,17 +138,13 @@ INSERT INTO major VALUES (3, "BTC");
 INSERT INTO subjects VALUES (1, "Mathématiques");
 INSERT INTO subjects VALUES (2, "Informatique");
 
-INSERT INTO users VALUES (1, "password", "Evans", "Mark", "mark@gmail.com", "2000-01-02", "student");
-INSERT INTO users VALUES (2, "password", "Blaze", "Axel", "axel@gmail.com", "2002-05-06", "student");
-INSERT INTO users VALUES (3, "password", "Sharp", "Jude", "jude@gmail.com", "2002-04-03", "student");
-INSERT INTO users VALUES (4, "password", "Eau", "Ondine", "ondine@gmail.com", "1982-07-08", "teacher");
-INSERT INTO users VALUES (5, "password", "Roche", "Pierre", "pierre@gmail.com", "1978-09-10", "teacher");
-INSERT INTO users VALUES (6, "password", "Capone", "Bege", "bege@gmail.com", "1786-12-01", "administrator");
-INSERT INTO users VALUES (7, "password", "Newgate", "Edward", "edward@gmail.com", "1781-02-11", "administrator");
-
-INSERT INTO users_to_validate VALUES (7, "password", "Newgate", "Edward", "edward@gmail.com", "1781-02-11", "administrator", null);
-
-INSERT INTO users VALUES (8, "a", "Nom", "Prénom", "a@gmail.com", "1111-11-11", 3);
+INSERT INTO users VALUES (1, "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62", "Evans", "Mark", "mark@gmail.com", "2000-01-02", "student");
+INSERT INTO users VALUES (2, "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62", "Blaze", "Axel", "axel@gmail.com", "2002-05-06", "student");
+INSERT INTO users VALUES (3, "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62", "Sharp", "Jude", "jude@gmail.com", "2002-04-03", "student");
+INSERT INTO users VALUES (4, "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62", "Eau", "Ondine", "ondine@gmail.com", "1982-07-08", "teacher");
+INSERT INTO users VALUES (5, "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62", "Roche", "Pierre", "pierre@gmail.com", "1978-09-10", "teacher");
+INSERT INTO users VALUES (6, "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62", "Capone", "Bege", "bege@gmail.com", "1786-12-01", "administrator");
+INSERT INTO users VALUES (7, "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62", "Newgate", "Edward", "edward@gmail.com", "1781-02-11", "administrator");
 
 INSERT INTO student VALUES (1, 3, 1);
 INSERT INTO student VALUES (2, 1, 2);
