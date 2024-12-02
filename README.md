@@ -6,9 +6,8 @@
 1. [DESCRIPTION](#description)
 2. [FONCTIONNALITÉS](#fonctionnalités)
 3. [TECHNOLOGIES](#technologies)
-4. [INSTALLATION](#installation)
-5. [UTILISATION](#utilisation)
-6. [CONTRIBUTEURS](#contributeurs)
+4. [UTILISATION](#utilisation)
+5. [CONTRIBUTEURS](#contributeurs)
 
 ## DESCRIPTION
 Ce projet a été réalisé du 25/10/24 au 02/12/24 dans le cadre du module **JEE** enseigné par Monsieur HADDACHE. Il s'agit d'une **application web** de gestion de scolarité, permettant aux étudiants, enseignants et administrateurs de gérer les informations académiques de manière efficace. L'objectif principal de ce projet est de fournir un outil complet pour la gestion des cours, des inscriptions, des notes des étudiants, et la génération de rapports académiques.
